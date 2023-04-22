@@ -18,9 +18,17 @@ class SearchLocationWidget extends ConsumerStatefulWidget {
 
 class _SearchLocationWidgetState extends ConsumerState<SearchLocationWidget> {
   final apiKey = Const.apiKey;
-  Place? place;
-  Uri? mapURL;
-  bool? isExist;
+  // Place? place;
+  // Place place0;
+  // Place? place1;
+  // Place? place2;
+  // bool? isExist;
+  // Uri? mapURL;
+  // Uri? mapURL0;
+  // Uri? mapURL1;
+  // Uri? mapURL2;
+
+  List<Place> places = [];
 
   // final placeName = ref.watch(placeNameProvider);
   // String keyword = placeName;
@@ -46,7 +54,7 @@ class _SearchLocationWidgetState extends ConsumerState<SearchLocationWidget> {
       );
     }
 
-    if (place == null) {
+    if (places[0] == null) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
@@ -54,38 +62,179 @@ class _SearchLocationWidgetState extends ConsumerState<SearchLocationWidget> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(keyword), //ここから一番近いトイレ
+        title: Text(keyword),
       ),
-      body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        SizedBox(
-            height: 240,
-            width: double.infinity,
-            child: Image.network(place!.photo!, fit: BoxFit.contain)),
-        const SizedBox(
-          height: 8,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            place!.name!,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
+      body: ListView(
+        children: [
+          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            SizedBox(
+                height: 240,
+                width: double.infinity,
+                child: Image.network(place0!.photo!, fit: BoxFit.contain)),
+            const SizedBox(
+              height: 8,
             ),
-          ),
-        ),
-        const SizedBox(
-          height: 8,
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            if (mapURL != null) {
-              await launchUrl(mapURL!);
-            }
-          },
-          child: const Text('Google Map へ'),
-        ),
-      ]),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                place0!.name!,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (mapURL0 != null) {
+                  await launchUrl(mapURL0!);
+                }
+              },
+              child: const Text('Google Map へ'),
+            ),
+          ]),
+          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            SizedBox(
+                height: 240,
+                width: double.infinity,
+                child: Image.network(place1!.photo!, fit: BoxFit.contain)),
+            const SizedBox(
+              height: 8,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                place1!.name!,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (mapURL1 != null) {
+                  await launchUrl(mapURL1!);
+                }
+              },
+              child: const Text('Google Map へ'),
+            ),
+          ]),
+          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            SizedBox(
+                height: 240,
+                width: double.infinity,
+                child: Image.network(place2!.photo!, fit: BoxFit.contain)),
+            const SizedBox(
+              height: 8,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                place2!.name!,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (mapURL2 != null) {
+                  await launchUrl(mapURL2!);
+                }
+              },
+              child: const Text('Google Map へ'),
+            ),
+          ])
+        ],
+      ),
+
+      // ListView.builder(
+      // itemCount: places.length,
+      // itemBuilder: (c, i) {
+      //   return Column(
+      //       mainAxisAlignment: MainAxisAlignment.center,
+      //       children: [
+      //         SizedBox(
+      //             height: 240,
+      //             width: double.infinity,
+      //             child: Image.network(places[i].Place!.photo!,
+      //                 fit: BoxFit.contain)),
+      //         const SizedBox(
+      //           height: 8,
+      //         ),
+      //         Padding(
+      //           padding: const EdgeInsets.all(8.0),
+      //           child: Text(
+      //             place!.name!,
+      //             style: const TextStyle(
+      //               fontWeight: FontWeight.bold,
+      //               fontSize: 24,
+      //             ),
+      //           ),
+      //         ),
+      //         const SizedBox(
+      //           height: 8,
+      //         ),
+      //         ElevatedButton(
+      //           onPressed: () async {
+      //             if (mapURL0 != null) {
+      //               await launchUrl(mapURL0!);
+      //             }
+
+      //             // if (mapURL != null) {
+      //             //   await launchUrl(mapURL!);
+      //             // }
+      //           },
+      //           child: const Text('Google Map へ'),
+      //         ),
+      //       ]);
+      // }),
+
+      // body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      //   SizedBox(
+      //       height: 240,
+      //       width: double.infinity,
+      //       child: Image.network(place!.photo!, fit: BoxFit.contain)),
+      //   const SizedBox(
+      //     height: 8,
+      //   ),
+      //   Padding(
+      //     padding: const EdgeInsets.all(8.0),
+      //     child: Text(
+      //       place!.name!,
+      //       style: const TextStyle(
+      //         fontWeight: FontWeight.bold,
+      //         fontSize: 24,
+      //       ),
+      //     ),
+      //   ),
+      //   const SizedBox(
+      //     height: 8,
+      //   ),
+      //   ElevatedButton(
+      //     onPressed: () async {
+      //       if (mapURL0 != null) {
+      //         await launchUrl(mapURL0!);
+      //       }
+
+      //       // if (mapURL != null) {
+      //       //   await launchUrl(mapURL!);
+      //       // }
+      //     },
+      //     child: const Text('Google Map へ'),
+      //   ),
+      // ]),
     );
   }
 
@@ -103,56 +252,21 @@ class _SearchLocationWidgetState extends ConsumerState<SearchLocationWidget> {
       rankby: RankBy.Distance,
     );
 
-    final results = responce?.results;
-    final isExist = results?.isNotEmpty ?? false;
-    setState(() {
-      this.isExist = isExist;
-    });
-    if (!isExist) {
-      return;
-    }
-    final firstResult = results?.first;
-    // final secondResult = results?.elementAt(1);
-    final placeLocation = firstResult?.geometry?.location;
-    final placeLatitude = placeLocation?.lat;
-    final placeLongitude = placeLocation?.lng;
-
-    //googlemapに飛ぶURLの作成
-    String urlString = '';
-    if (Platform.isAndroid) {
-      urlString =
-          'https://www.google.com/maps/dir/$currentLatitude,$currentLongitude/$placeLatitude,$placeLongitude';
-    } else if (Platform.isIOS) {
-      urlString =
-          'comgooglemaps://?saddr=$currentLatitude,$currentLongitude&daddr=$placeLatitude,$placeLongitude&directionsmode=walking';
-    }
-    mapURL = Uri.parse(urlString);
-
-    if (firstResult != null && mounted) {
-      final photoReference = firstResult.photos?.first.photoReference;
-      final String photoURL;
-      if (photoReference != null) {
-        photoURL =
-            'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=$photoReference&key=$apiKey';
-      } else {
-        photoURL =
-            'https://4.bp.blogspot.com/-O0Pur3sjarQ/UP06O9klHeI/AAAAAAAAK6A/HTglhQkjMWk/s1600/place_boy.png';
-      }
-      // setState(() {
-      place = Place(
-        firstResult.name,
-        photoURL,
-        placeLocation,
-      );
-      // });
-      // place = Place(
-      //   firstResult.name,
-      //   photoURL,
-      //   placeLocation,
-      // );
-
-      // Place(secondResult.name, photo, location),
-    }
+    final results = responce?.results ?? [];
+    places = results
+        .map(
+          (result) => Place(
+              name: result.name,
+              photo: (result.photos ?? []).isEmpty
+                  ? null
+                  : (result.photos ?? []).first.photoReference,
+              location: result.geometry?.location,
+              mapURL: Uri.parse(Platform.isAndroid
+                  ? 'https://www.google.com/maps/dir/$currentLatitude,$currentLongitude/${result.geometry?.location?.lat},${result.geometry?.location?.lng}'
+                  : 'comgooglemaps://?saddr=$currentLatitude,$currentLongitude&daddr=${result.geometry?.location?.lat},${result.geometry?.location?.lng}&directionsmode=walking')),
+        )
+        .toList();
+    setState(() {});
   }
 
   /// Determine the current position of the device.
