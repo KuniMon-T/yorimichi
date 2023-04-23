@@ -18,20 +18,8 @@ class SearchLocationWidget extends ConsumerStatefulWidget {
 
 class _SearchLocationWidgetState extends ConsumerState<SearchLocationWidget> {
   final apiKey = Const.apiKey;
-  // Place? place;
-  // Place place0;
-  // Place? place1;
-  // Place? place2;
   bool? isExist;
-  // Uri? mapURL;
-  // Uri? mapURL0;
-  // Uri? mapURL1;
-  // Uri? mapURL2;
-
   List<Place> places = [];
-
-  // final placeName = ref.watch(placeNameProvider);
-  // String keyword = placeName;
 
   @override
   void initState() {
@@ -39,7 +27,6 @@ class _SearchLocationWidgetState extends ConsumerState<SearchLocationWidget> {
     final index = ref.read(indexProvider);
     super.initState();
     _searchLocation(placeName, index);
-    // _searchLocation();
   }
 
   @override
@@ -102,136 +89,6 @@ class _SearchLocationWidgetState extends ConsumerState<SearchLocationWidget> {
                   ),
                 ]);
           }),
-
-      // ListView(
-      //   children: [
-      //     Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      //       SizedBox(
-      //           height: 240,
-      //           width: double.infinity,
-      //           child: Image.network(place0!.photo!, fit: BoxFit.contain)),
-      //       const SizedBox(
-      //         height: 8,
-      //       ),
-      //       Padding(
-      //         padding: const EdgeInsets.all(8.0),
-      //         child: Text(
-      //           place0!.name!,
-      //           style: const TextStyle(
-      //             fontWeight: FontWeight.bold,
-      //             fontSize: 24,
-      //           ),
-      //         ),
-      //       ),
-      //       const SizedBox(
-      //         height: 8,
-      //       ),
-      //       ElevatedButton(
-      //         onPressed: () async {
-      //           if (mapURL0 != null) {
-      //             await launchUrl(mapURL0!);
-      //           }
-      //         },
-      //         child: const Text('Google Map へ'),
-      //       ),
-      //     ]),
-      //     Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      //       SizedBox(
-      //           height: 240,
-      //           width: double.infinity,
-      //           child: Image.network(place1!.photo!, fit: BoxFit.contain)),
-      //       const SizedBox(
-      //         height: 8,
-      //       ),
-      //       Padding(
-      //         padding: const EdgeInsets.all(8.0),
-      //         child: Text(
-      //           place1!.name!,
-      //           style: const TextStyle(
-      //             fontWeight: FontWeight.bold,
-      //             fontSize: 24,
-      //           ),
-      //         ),
-      //       ),
-      //       const SizedBox(
-      //         height: 8,
-      //       ),
-      //       ElevatedButton(
-      //         onPressed: () async {
-      //           if (mapURL1 != null) {
-      //             await launchUrl(mapURL1!);
-      //           }
-      //         },
-      //         child: const Text('Google Map へ'),
-      //       ),
-      //     ]),
-      //     Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      //       SizedBox(
-      //           height: 240,
-      //           width: double.infinity,
-      //           child: Image.network(place2!.photo!, fit: BoxFit.contain)),
-      //       const SizedBox(
-      //         height: 8,
-      //       ),
-      //       Padding(
-      //         padding: const EdgeInsets.all(8.0),
-      //         child: Text(
-      //           place2!.name!,
-      //           style: const TextStyle(
-      //             fontWeight: FontWeight.bold,
-      //             fontSize: 24,
-      //           ),
-      //         ),
-      //       ),
-      //       const SizedBox(
-      //         height: 8,
-      //       ),
-      //       ElevatedButton(
-      //         onPressed: () async {
-      //           if (mapURL2 != null) {
-      //             await launchUrl(mapURL2!);
-      //           }
-      //         },
-      //         child: const Text('Google Map へ'),
-      //       ),
-      //     ])
-      //   ],
-      // ),
-
-      // body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      //   SizedBox(
-      //       height: 240,
-      //       width: double.infinity,
-      //       child: Image.network(place!.photo!, fit: BoxFit.contain)),
-      //   const SizedBox(
-      //     height: 8,
-      //   ),
-      //   Padding(
-      //     padding: const EdgeInsets.all(8.0),
-      //     child: Text(
-      //       place!.name!,
-      //       style: const TextStyle(
-      //         fontWeight: FontWeight.bold,
-      //         fontSize: 24,
-      //       ),
-      //     ),
-      //   ),
-      //   const SizedBox(
-      //     height: 8,
-      //   ),
-      //   ElevatedButton(
-      //     onPressed: () async {
-      //       if (mapURL0 != null) {
-      //         await launchUrl(mapURL0!);
-      //       }
-
-      //       // if (mapURL != null) {
-      //       //   await launchUrl(mapURL!);
-      //       // }
-      //     },
-      //     child: const Text('Google Map へ'),
-      //   ),
-      // ]),
     );
   }
 
@@ -283,20 +140,12 @@ class _SearchLocationWidgetState extends ConsumerState<SearchLocationWidget> {
     setState(() {});
   }
 
-  /// Determine the current position of the device.
-  ///
-  /// When the location services are not enabled or permissions
-  /// are denied the `Future` will return an error.
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
       return Future.error('設定から位置情報を許可してください');
     }
 
@@ -304,22 +153,14 @@ class _SearchLocationWidgetState extends ConsumerState<SearchLocationWidget> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
         return Future.error('設定から位置情報を許可してください');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
       return Future.error('設定から位置情報を許可してください');
     }
 
-    // When we reach here, permissions are granted and we can
-    // continue accessing the position of the device.
     return await Geolocator.getCurrentPosition();
   }
 }
