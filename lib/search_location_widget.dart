@@ -32,6 +32,7 @@ class _SearchLocationWidgetState extends ConsumerState<SearchLocationWidget> {
   @override
   Widget build(BuildContext context) {
     final placeName = ref.watch(placeNameProvider);
+    final index = ref.watch(indexProvider);
     String keyword = placeName;
 
     if (isExist == false) {
@@ -55,41 +56,92 @@ class _SearchLocationWidgetState extends ConsumerState<SearchLocationWidget> {
       body: ListView.builder(
           itemCount: places.length,
           itemBuilder: (c, i) {
-            return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                      height: 240,
-                      width: double.infinity,
-                      child: Image.network(places.elementAt(i).photo!,
-                          fit: BoxFit.contain)),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      places.elementAt(i).name!,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
+            return Container(
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.blue, width: 5),
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+              ),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                        height: 240,
+                        width: double.infinity,
+                        child: Image.network(places.elementAt(i).photo!,
+                            fit: BoxFit.contain)),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        places.elementAt(i).name!,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      if (places.elementAt(i).mapURL != null) {
-                        await launchUrl(places.elementAt(i).mapURL!);
-                      }
-                    },
-                    child: const Text('Google Map へ'),
-                  ),
-                ]);
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: unitConversion(places.elementAt(i).distance!),
+                        ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            if (places.elementAt(i).mapURL != null) {
+                              await launchUrl(places.elementAt(i).mapURL!);
+                            }
+                          },
+                          child: const Text('Google Map へ'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                  ]),
+            );
           }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          places = [];
+          setState(() {});
+          _searchLocation(placeName, index);
+        },
+        child: const Icon(Icons.refresh),
+      ),
     );
+  }
+
+  Widget unitConversion(int meterDistance) {
+    if (meterDistance < 1000) {
+      return Text(
+        '現在地から${meterDistance}m',
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      );
+    } else {
+      double kilometerDistance;
+      kilometerDistance = meterDistance.toDouble() / 1000;
+      return Text(
+        '現在地から${kilometerDistance}km',
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      );
+    }
   }
 
   Future _searchLocation(String placeName, int index) async {
@@ -109,6 +161,10 @@ class _SearchLocationWidgetState extends ConsumerState<SearchLocationWidget> {
         break;
       case 2:
         notExistPhotoURL =
+            "https://free-icons.net/wp-content/uploads/2020/09/build017.png";
+        break;
+      case 3:
+        notExistPhotoURL =
             "https://free-icons.net/wp-content/uploads/2020/01/build002.png";
         break;
     }
@@ -127,14 +183,20 @@ class _SearchLocationWidgetState extends ConsumerState<SearchLocationWidget> {
     places = results
         .map(
           (result) => Place(
-              name: result.name,
-              photo: (result.photos ?? []).isEmpty
-                  ? notExistPhotoURL
-                  : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${(result.photos ?? []).first.photoReference}&key=$apiKey",
-              location: result.geometry?.location,
-              mapURL: Uri.parse(Platform.isAndroid
-                  ? 'https://www.google.com/maps/dir/$currentLatitude,$currentLongitude/${result.geometry?.location?.lat},${result.geometry?.location?.lng}'
-                  : 'comgooglemaps://?saddr=$currentLatitude,$currentLongitude&daddr=${result.geometry?.location?.lat},${result.geometry?.location?.lng}&directionsmode=walking')),
+            name: result.name,
+            photo: (result.photos ?? []).isEmpty
+                ? notExistPhotoURL
+                : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${(result.photos ?? []).first.photoReference}&key=$apiKey",
+            location: result.geometry?.location,
+            mapURL: Uri.parse(Platform.isAndroid
+                ? 'https://www.google.com/maps/dir/$currentLatitude,$currentLongitude/${result.geometry?.location?.lat},${result.geometry?.location?.lng}'
+                : 'comgooglemaps://?saddr=$currentLatitude,$currentLongitude&daddr=${result.geometry?.location?.lat},${result.geometry?.location?.lng}&directionsmode=walking'),
+            distance: getDistance(
+                currentLatitude,
+                currentLongitude,
+                result.geometry!.location!.lat!,
+                result.geometry!.location!.lng!),
+          ),
         )
         .toList();
     setState(() {});
@@ -162,5 +224,12 @@ class _SearchLocationWidgetState extends ConsumerState<SearchLocationWidget> {
     }
 
     return await Geolocator.getCurrentPosition();
+  }
+
+  int getDistance(double currentLatitude, double currentLongitude,
+      double targetLatitude, double targetLongitude) {
+    double distanceInMeters = Geolocator.distanceBetween(
+        currentLatitude, currentLongitude, targetLatitude, targetLongitude);
+    return distanceInMeters.round();
   }
 }

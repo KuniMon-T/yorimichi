@@ -37,7 +37,11 @@ class MyApp extends ConsumerWidget {
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.local_gas_station_rounded),
-        label: 'ガソリンスタンド',
+        label: 'ガソスタ',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.restaurant_rounded),
+        label: 'レストラン',
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.store_mall_directory_rounded),
@@ -48,7 +52,7 @@ class MyApp extends ConsumerWidget {
     // 下のバー
     final bar = BottomNavigationBar(
       items: items, // アイテムたち
-      backgroundColor: Colors.green, // バーの色
+      backgroundColor: Colors.blue, // バーの色
       selectedItemColor: Colors.yellow, // 選ばれたアイテムの色
       unselectedItemColor: Colors.black, // 選ばれていないアイテムの色
       type: BottomNavigationBarType.fixed, //itemが４つ以上の時に表示が崩れるのを防止
@@ -57,7 +61,7 @@ class MyApp extends ConsumerWidget {
         // タップされたとき インデックスを変更する
         ref.read(indexProvider.notifier).state = index;
         switch (index) {
-          case 0: // PlaceName ノティファイアを呼ぶ
+          case 0: // PlaceName ノティファイアを呼ぶ\assets-for-api-docs\assets\material\Colors.orange.png
             final notifier = ref.read(placeNameProvider.notifier);
             // PlaceName データを変更
             notifier.state = 'コンビニ';
@@ -66,6 +70,10 @@ class MyApp extends ConsumerWidget {
             // PlaceName データを変更
             notifier.state = 'ガソリンスタンド';
           case 2: // PlaceName ノティファイアを呼ぶ
+            final notifier = ref.read(placeNameProvider.notifier);
+            // PlaceName データを変更
+            notifier.state = 'レストラン';
+          case 3: // PlaceName ノティファイアを呼ぶ
             final notifier = ref.read(placeNameProvider.notifier);
             // PlaceName データを変更
             notifier.state = '道の駅';
@@ -80,6 +88,9 @@ class MyApp extends ConsumerWidget {
       ),
       SearchLocationWidget(
         key: ValueKey('ガソリンスタンド'),
+      ),
+      SearchLocationWidget(
+        key: ValueKey('レストラン'),
       ),
       SearchLocationWidget(
         key: ValueKey('道の駅'),

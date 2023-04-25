@@ -5,6 +5,7 @@ class Place {
   String? photo;
   Location? location;
   Uri? mapURL;
+  int? distance;
 
-  Place({this.name, this.photo, this.location, this.mapURL});
+  Place({this.name, this.photo, this.location, this.mapURL, this.distance});
 }
