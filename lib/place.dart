@@ -6,6 +6,17 @@ class Place {
   Location? location;
   Uri? mapURL;
   int? distance;
+  bool? openNow;
+  double? rating;
+  int? userRatingTotal;
 
-  Place({this.name, this.photo, this.location, this.mapURL, this.distance});
+  Place(
+      {this.name,
+      this.photo,
+      this.location,
+      this.mapURL,
+      this.distance,
+      this.openNow,
+      this.rating,
+      this.userRatingTotal});
 }

@@ -41,7 +41,7 @@ class MyApp extends ConsumerWidget {
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.restaurant_rounded),
-        label: 'レストラン',
+        label: '飲食店',
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.store_mall_directory_rounded),
@@ -72,7 +72,7 @@ class MyApp extends ConsumerWidget {
           case 2: // PlaceName ノティファイアを呼ぶ
             final notifier = ref.read(placeNameProvider.notifier);
             // PlaceName データを変更
-            notifier.state = 'レストラン';
+            notifier.state = '飲食店';
           case 3: // PlaceName ノティファイアを呼ぶ
             final notifier = ref.read(placeNameProvider.notifier);
             // PlaceName データを変更
@@ -90,13 +90,14 @@ class MyApp extends ConsumerWidget {
         key: ValueKey('ガソリンスタンド'),
       ),
       SearchLocationWidget(
-        key: ValueKey('レストラン'),
+        key: ValueKey('飲食店'),
       ),
       SearchLocationWidget(
         key: ValueKey('道の駅'),
       ),
     ];
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Center(child: pages[index]),
         bottomNavigationBar: bar,
