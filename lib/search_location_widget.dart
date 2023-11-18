@@ -313,8 +313,9 @@ class _SearchLocationWidgetState extends ConsumerState<SearchLocationWidget> {
                 location: result.geometry?.location,
                 mapURL: Uri.parse(Platform.isAndroid
                     ? index == 2 || index == 3
-                        ? 'https://www.google.com/maps?q=${result.name}'
-                        : 'https://www.google.com/maps/dir/$currentLatitude,$currentLongitude/${result.geometry?.location?.lat},${result.geometry?.location?.lng}'
+                        ? 'https://www.google.com/maps/search/?api=1&query=${result.name}'
+                        : 'https://www.google.com/maps/search/?api=1&query=${result.name}'
+                    // : 'https://www.google.com/maps/dir/$currentLatitude,$currentLongitude/${result.geometry?.location?.lat},${result.geometry?.location?.lng}'
                     : 'comgooglemaps://?saddr=$currentLatitude,$currentLongitude&daddr=${result.geometry?.location?.lat},${result.geometry?.location?.lng}&directionsmode=walking'),
                 distance: getDistance(
                     currentLatitude,
